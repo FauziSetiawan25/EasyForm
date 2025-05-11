@@ -42,17 +42,8 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    @auth
-    <form method="POST" action="{{ url('/logout') }}">
-        @csrf
-        <button class="btn btn-outline-danger">Logout</button>
-    </form>
-    @endauth
-  </div>
-</nav>
-<div class="container mt-4">
+<!--  -->
+<div class="container">
     @yield('content')
 </div>
 </body>

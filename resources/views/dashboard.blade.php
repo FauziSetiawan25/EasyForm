@@ -1,157 +1,190 @@
 @extends('layout')
 
 @section('content')
-<style>
-    .modal, .modal-overlay {
-        display: none;
-    }
-    .modal-overlay {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 998;
-    }
-    .modal {
-        position: fixed;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        z-index: 999;
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        max-width: 400px;
-        width: 100%;
-    }
-    .modal input {
-        display: block;
-        width: 100%;
-        margin-bottom: 10px;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-    .modal button {
-        margin-top: 10px;
-    }
-    .btn {
-        padding: 8px 12px;
-        margin-right: 10px;
-        background: #007BFF;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-    }
-    .btn:hover {
-        background: #0056b3;
-    }
-    .btn-danger {
-        background: #dc3545;
-    }
-    .btn-danger:hover {
-        background: #a71d2a;
-    }
-</style>
+    <div class="container mx-auto py-10 bg-gray-100 min-h-screen">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-5xl font-bold">👋 Selamat datang, <span class="text-[#4A90E2]">{{ $user->name }}</span></h2>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button class="cursor-pointer bg-red-500 rounded-md text-white font-semibold transition 
+            duration-300 ease-in-out hover:bg-red-700 hover:ring-2 hover:ring-red-500 hover:shadow-xl hover:shadow-red-500 
+            focus:ring-red-300 focus:shadow-red-400 px-4 py-2 flex" type="button"
+                    onclick="showLogoutModal()">
+                    <svg class="w-6 h-6 text-white mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 11-4 0v-1m4-8V7a2 2 0 10-4 0v1" />
+                </svg> 
+                Logout
+                </button>
+            </form>
+        </div>
 
-<div class="container py-5">
-    <h2>👋 Selamat datang, {{ $user->name }}</h2>
+        @if (session('success'))
+            <div class="text-green-600 mb-4 font-semibold">{{ session('success') }}</div>
+        @endif
 
-    @if (session('success'))
-        <div style="color: green;">{{ session('success') }}</div>
-    @endif
+        <div class="bg-white shadow rounded-lg px-6 py-10">
+            <h2 class="text-2xl font-bold mb-6">Data anda:</h2>
+            <table class="w-full text-left table-auto">
+                <tbody>
+                    <tr class="bg-slate-100">
+                        <th class="py-2 px-2">NIK</th>
+                        <td>{{ $user->nik }}</td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-2">Nama</th>
+                        <td>{{ $user->name }}</td>
+                    </tr>
+                    <tr class="bg-slate-100">
+                        <th class="py-2 px-2">Tempat Lahir</th>
+                        <td>{{ $user->birth_place }}</td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-2">Tanggal Lahir</th>
+                        <td>{{ \Carbon\Carbon::parse($user->birth_date)->format('Y-m-d') }}</td>
+                    </tr>
+                    <tr class="bg-slate-100">
+                        <th class="py-2 px-2">Gender</th>
+                        <td>{{ $user->gender }}</td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 px-2">Alamat</th>
+                        <td>{{ $user->address }}</td>
+                    </tr>
+                    <tr class="bg-slate-100">
+                        <th class="py-2 px-2">Phone</th>
+                        <td>{{ $user->phone }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <table class="table mt-3">
-        <tr><th>NIK</th><td>{{ $user->nik }}</td></tr>
-        <tr><th>Nama</th><td>{{ $user->name }}</td></tr>
-        <tr><th>Tempat Lahir</th><td>{{ $user->birth_place }}</td></tr>
-        <tr><th>Tanggal Lahir</th><td>{{ \Carbon\Carbon::parse($user->birth_date)->format('Y-m-d') }}</td></tr>
-        <tr><th>Gender</th><td>{{ $user->gender }}</td></tr>
-        <tr><th>Alamat</th><td>{{ $user->address }}</td></tr>
-        <tr><th>Phone</th><td>{{ $user->phone }}</td></tr>
-    </table>
-
-    <div class="mt-3">
-        <button class="btn" onclick="showEditModal()">✏️ Edit Data</button>
-        <button class="btn" onclick="showQRModal()">📱 Show QR</button>
-        <a class="btn" href="{{ route('download.qr') }}">⬇️ Download QR</a>
-        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-            @csrf
-            <button class="btn btn-danger" type="submit">🚪 Logout</button>
-        </form>
+        <div class="block md:flex md:justify-between gap-4 mt-8">
+            <a onclick="showEditModal()" class="cursor-pointer bg-[#4A90E2] rounded-md text-white font-semibold transition 
+            duration-300 ease-in-out hover:bg-blue-700 hover:ring-2 hover:ring-blue-500 hover:shadow-xl hover:shadow-[#4A90E2] 
+            focus:ring-blue-300 focus:shadow-blue-400 px-5 py-3">
+                ✏️ Edit Data</a>
+            <div class="flex gap-4">
+                <a onclick="showQRModal()" class="cursor-pointer bg-[#4A90E2] rounded-md text-white font-semibold transition 
+                duration-300 ease-in-out hover:bg-blue-700 hover:ring-2 hover:ring-blue-500 hover:shadow-xl hover:shadow-[#4A90E2] 
+                focus:ring-blue-300 focus:shadow-blue-400 px-5 py-3">
+                    📱 Show QR</a>
+                <a href="{{ route('download.qr') }}" class="text-center cursor-pointer bg-[#4A90E2] rounded-md text-white font-semibold transition 
+                duration-300 ease-in-out hover:bg-blue-700 hover:ring-2 hover:ring-blue-500 hover:shadow-xl hover:shadow-[#4A90E2] focus:ring-blue-300 
+                focus:shadow-blue-400 px-5 py-3">
+                    ⬇️ Download QR</a>
+            </div>
+        </div>
     </div>
-</div>
 
-<!-- Modal Overlay -->
-<div class="modal-overlay" id="overlay" onclick="hideModals()"></div>
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="hideModals()"></div>
 
-<!-- Modal Edit -->
-<div id="editModal" class="modal">
-    <form method="POST" action="{{ route('dashboard.update') }}">
-        @csrf
-        <h3>Edit Data</h3>
-        <input type="text" name="name" value="{{ $user->name }}" required>
-        <input type="text" name="nik" value="{{ $user->nik }}" required>
-        <input type="text" name="birth_place" value="{{ $user->birth_place }}" required>
-        <input type="date" name="birth_date" value="{{ $user->birth_date }}" required>
-        <select name="gender" required>
-            <option value="Laki-laki" {{ $user->gender == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-            <option value="Perempuan" {{ $user->gender == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-        </select>
-        <input type="text" name="address" value="{{ $user->address }}" required>
-        <input type="text" name="phone" value="{{ $user->phone }}" required>
-        <input type="text" name="marital_status" value="{{ $user->marital_status }}">
-        <input type="text" name="job" value="{{ $user->job }}">
-        <input type="text" name="citizenship" value="{{ $user->citizenship }}">
-        <input type="text" name="religion" value="{{ $user->religion }}">
-        <input type="text" name="bpjs" value="{{ $user->bpjs }}">
-        <input type="text" name="medical_history" value="{{ $user->medical_history }}">
-        <input type="text" name="allergies" value="{{ $user->allergies }}">
-        <input type="text" name="blood_type" value="{{ $user->blood_type }}">
+    <!-- Edit Modal -->
+    <div id="editModal" class="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg my-10 max-h-screen overflow-y-auto">
+            <form method="POST" action="{{ route('dashboard.update') }}">
+                @csrf
+                <div class="flex justify-between mb-4">
+                    <h3 class="text-lg font-semibold">Edit Data</h3>
+                    <button type="button" onclick="hideEditModal()" class=" text-white rounded">❌</button>
+                </div>
 
-        @php
-        $emergency = $user->emergency_contact ?? ['name' => '', 'phone' => '', 'relation' => ''];
-        @endphp
+                @foreach (['name' => 'Nama', 'nik' => 'NIK', 'birth_place' => 'Tempat Lahir', 'birth_date' => 'Tanggal Lahir', 'address' => 'Alamat', 'phone' => 'No HP', 'marital_status' => 'Status Perkawinan', 'job' => 'Pekerjaan', 'citizenship' => 'Kewarganegaraan', 'religion' => 'Agama', 'bpjs' => 'No BPJS', 'medical_history' => 'Riwayat Penyakit', 'allergies' => 'Alergi', 'blood_type' => 'Golongan Darah'] as $field => $label)
+                    <input type="{{ $field == 'birth_date' ? 'date' : 'text' }}"
+                           name="{{ $field }}"
 
-        <h4>Kontak Darurat</h4>
-        <input type="text" name="emergency_name" value="{{ $emergency['name'] ?? '' }}" placeholder="Nama Kontak Darurat">
-        <input type="text" name="emergency_phone" value="{{ $emergency['phone'] ?? '' }}" placeholder="No HP Darurat">
-        <input type="text" name="emergency_relation" value="{{ $emergency['relation'] ?? '' }}" placeholder="Hubungan">
+                                          value="{{ old($field, $user->$field) }}"
+
+                                          placeholder="{{ $label }}"
+
+                              class="w-full mb-3 p-2 border rounded" required>
+                @endforeach
 
 
-        <button class="btn" type="submit">💾 Simpan</button>
-        <button class="btn btn-danger" type="button" onclick="hideEditModal()">❌ Batal</button>
-    </form>
-</div>
+                                   <select name="gender" class="w-full mb-3 p-2 border
+                        rounded" required>
+                    <option value="Laki-laki" {{ $user->gender == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="Perempuan" {{ $user->gender == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                </select>
 
-<!-- Modal QR -->
-<div id="qrModal" class="modal">
-    <h3>📷 QR Code</h3>
-    <object data="{{ route('generate.qr') }}" type="image/svg+xml" style="width:200px;height:200px;"></object>
-    <button class="btn btn-danger" onclick="hideQRModal()">Tutup</button>
-</div>
+                <h4 class="mt-4 font-semibold">Kontak Darurat</h4>
+                @php
+                    $emergency = $user->emergency_contact ?? ['name' => '', 'phone' => '', 'relation' => ''];
+                @endphp
+                <input type="text" name="emergency_name" value="{{ $emergency['name'] ?? '' }}" placeholder="Nama" class="w-full mb-3 p-2 border rounded">
+                <input type="text" name="emergency_phone" value="{{ $emergency['phone'] ?? '' }}" placeholder="No HP" class="w-full mb-3 p-2 border rounded">
+                <input type="text" name="emergency_relation" value="{{ $emergency['relation'] ?? '' }}" placeholder="Hubungan" class="w-full mb-3 p-2 border rounded">
 
-<script>
-    function showEditModal() {
-        document.getElementById('editModal').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-    }
-    function hideEditModal() {
-        document.getElementById('editModal').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-    function showQRModal() {
-        document.getElementById('qrModal').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-    }
-    function hideQRModal() {
-        document.getElementById('qrModal').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-    function hideModals() {
-        hideEditModal();
-        hideQRModal();
-    }
-</script>
+                <div class="flex justify-between mt-4">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded">💾 Simpan</button>                    
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- QR Modal -->
+    <div id="qrModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+            <h3 class="text-lg font-semibold mb-4">📷 QR Code</h3>
+            <object data="{{ route('generate.qr') }}" type="image/svg+xml" class="mx-auto mb-4 w-48 h-48"></object>
+            <button onclick="hideQRModal()" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal Logout -->
+    <div id="logoutModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="hideLogoutModal()"></div>
+        <div class="bg-white rounded-lg shadow-lg z-50 p-6 w-full max-w-sm">
+            <div class="flex items-center mb-4">                
+                <h3 class="text-lg font-semibold text-gray-800">Konfirmasi Logout</h3>
+            </div>
+            <p class="text-sm text-gray-600">Apakah kamu yakin ingin logout?</p>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button onclick="hideLogoutModal()" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Batal</button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="px-4 py-2 !bg-red-600 text-white rounded hover:!bg-red-700" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function showEditModal() {
+            document.getElementById('editModal').classList.remove('hidden');
+            document.getElementById('overlay').classList.remove('hidden');
+        }
+
+        function hideEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+            document.getElementById('overlay').classList.add('hidden');
+        }
+
+        function showQRModal() {
+            document.getElementById('qrModal').classList.remove('hidden');
+            document.getElementById('overlay').classList.remove('hidden');
+        }
+
+        function hideQRModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+            document.getElementById('overlay').classList.add('hidden');
+        }
+
+        function hideModals() {
+            hideEditModal();
+            hideQRModal();
+        }
+
+        function showLogoutModal() {
+            document.getElementById('logoutModal').classList.remove('hidden');
+        }
+
+        function hideLogoutModal() {
+            document.getElementById('logoutModal').classList.add('hidden');
+        }
+    </script>
 @endsection
