@@ -26,6 +26,9 @@ Route::post('register', [RegisterController::class, 'store'])->name('register.st
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/reset_password', [AuthController::class, 'showResetPasswordForm'])->name('reset_password.form');
+Route::post('/reset_password', [AuthController::class, 'resetPassword'])->name('reset_password.submit');
+
 
 Route::middleware('checkLogin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
