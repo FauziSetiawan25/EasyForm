@@ -63,6 +63,9 @@
                             <a class="text-xs text-[#4A90E2] hover:underline" href="{{ url('/register') }}">
                                 Registration
                             </a>
+                            <a class="text-xs text-[#4A90E2] hover:underline" href="{{ url('/reset_password') }}">
+                                Reset Password
+                            </a>
                         </div>
                     </div>
                 </form>
