@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [AuthController::class, 'showLogin']);
 
 Route::get('register', [RegisterController::class, 'showForm'])->name('register.form');
 Route::post('register', [RegisterController::class, 'store'])->name('register.store');

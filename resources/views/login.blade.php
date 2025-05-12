@@ -60,9 +60,6 @@
                             <button type="submit"> Masuk</button>
                         </div>
                         <div class="flex justify-between items-center mt-2">
-                            <a class="text-xs text-[#4A90E2] hover:underline" href="#">
-                                Forgot Password?
-                            </a>
                             <a class="text-xs text-[#4A90E2] hover:underline" href="{{ url('/register') }}">
                                 Registration
                             </a>

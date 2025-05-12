@@ -129,7 +129,7 @@
     <div id="qrModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
         <div class="bg-white rounded-lg shadow-lg p-6 text-center">
             <h3 class="text-lg font-semibold mb-4">📷 QR Code</h3>
-            <object data="{{ route('generate.qr') }}" type="image/svg+xml" class="mx-auto mb-4 w-48 h-48"></object>
+            <img src="{{ route('generate.qr') }}" alt="QR Code" class="w-64 h-64 mb-4" />
             <button onclick="hideQRModal()" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded">Tutup</button>
         </div>
     </div>
