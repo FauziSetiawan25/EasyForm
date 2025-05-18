@@ -88,23 +88,48 @@
                 @csrf
                 <div class="flex justify-between mb-4">
                     <h3 class="text-lg font-semibold">Edit Data</h3>
-                    <button type="button" onclick="hideEditModal()" class=" text-white rounded">❌</button>
+                    <button type="button" onclick="hideEditModal()" class="text-white rounded">❌</button>
                 </div>
 
-                @foreach (['name' => 'Nama', 'nik' => 'NIK', 'birth_place' => 'Tempat Lahir', 'birth_date' => 'Tanggal Lahir', 'address' => 'Alamat', 'phone' => 'No HP', 'marital_status' => 'Status Perkawinan', 'job' => 'Pekerjaan', 'citizenship' => 'Kewarganegaraan', 'religion' => 'Agama', 'bpjs' => 'No BPJS', 'medical_history' => 'Riwayat Penyakit', 'allergies' => 'Alergi', 'blood_type' => 'Golongan Darah'] as $field => $label)
+                @foreach (['name' => 'Nama', 'nik' => 'NIK', 'birth_place' => 'Tempat Lahir', 'birth_date' => 'Tanggal Lahir', 'address' => 'Alamat', 'phone' => 'No HP', 'job' => 'Pekerjaan', 'citizenship' => 'Kewarganegaraan', 'bpjs' => 'No BPJS', 'medical_history' => 'Riwayat Penyakit', 'allergies' => 'Alergi'] as $field => $label)
                     <input type="{{ $field == 'birth_date' ? 'date' : 'text' }}"
-                           name="{{ $field }}"
-
-                                          value="{{ old($field, $user->$field) }}"
-
-                                          placeholder="{{ $label }}"
-
-                              class="w-full mb-3 p-2 border rounded" required>
+                        name="{{ $field }}"
+                        value="{{ old($field, $user->$field) }}"
+                        placeholder="{{ $label }}"
+                        class="w-full mb-3 p-2 border rounded"
+                        required>
                 @endforeach
 
+                <!-- Status Pernikahan -->
+                <select name="marital_status" class="w-full mb-3 p-2 border rounded" required>
+                    <option value="">-- Status Pernikahan --</option>
+                    <option value="Belum Menikah" {{ $user->marital_status == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
+                    <option value="Menikah" {{ $user->marital_status == 'Menikah' ? 'selected' : '' }}>Menikah</option>
+                    <option value="Cerai" {{ $user->marital_status == 'Duda/Janda' ? 'selected' : '' }}>Duda/Janda</option>
+                </select>
 
-                                   <select name="gender" class="w-full mb-3 p-2 border
-                        rounded" required>
+                <!-- Agama -->
+                <select name="religion" class="w-full mb-3 p-2 border rounded" required>
+                    <option value="">-- Pilih Agama --</option>
+                    <option value="Islam" {{ $user->religion == 'Islam' ? 'selected' : '' }}>Islam</option>
+                    <option value="Kristen" {{ $user->religion == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                    <option value="Katolik" {{ $user->religion == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                    <option value="Hindu" {{ $user->religion == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                    <option value="Buddha" {{ $user->religion == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                    <option value="Konghucu" {{ $user->religion == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                </select>
+
+                <!-- Golongan Darah -->
+                <select name="blood_type" class="w-full mb-3 p-2 border rounded" required>
+                    <option value="">-- Golongan Darah --</option>
+                    <option value="A" {{ $user->blood_type == 'A' ? 'selected' : '' }}>A</option>
+                    <option value="B" {{ $user->blood_type == 'B' ? 'selected' : '' }}>B</option>
+                    <option value="AB" {{ $user->blood_type == 'AB' ? 'selected' : '' }}>AB</option>
+                    <option value="O" {{ $user->blood_type == 'O' ? 'selected' : '' }}>O</option>
+                </select>
+
+                <!-- Gender -->
+                <select name="gender" class="w-full mb-3 p-2 border rounded" required>
                     <option value="Laki-laki" {{ $user->gender == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                     <option value="Perempuan" {{ $user->gender == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                 </select>
