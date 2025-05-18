@@ -205,14 +205,6 @@
             <h3 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px;">Informasi Akun*</h3>
 
             <div style="margin-bottom: 15px;">
-                <label style="display: block; margin-bottom: 5px; color: #2c3e50;">Email*</label>
-                <input type="email" name="email" value="{{ old('email') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; @error('email') border-color: #e74c3c; @enderror">
-                @error('email')
-                    <span style="color: #e74c3c; font-size: 12px;">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div style="margin-bottom: 15px;">
                 <label style="display: block; margin-bottom: 5px; color: #2c3e50;">Password* (minimal 6 karakter)</label>
                 <input type="password" name="password" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; @error('password') border-color: #e74c3c; @enderror">
                 @error('password')
