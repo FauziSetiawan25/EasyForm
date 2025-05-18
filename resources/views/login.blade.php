@@ -18,15 +18,15 @@
                     Sistem kami membantu tenaga medis dalam pencatatan dan manajemen data pasien secara efisien.
                 </p>
             </div>
-            <img alt="Illustration" 
-                 class="w-[320px] md:w-[400px] object-contain rounded-[20px]" 
+            <img alt="Illustration"
+                 class="w-[320px] md:w-[400px] object-contain rounded-[20px]"
                  src="https://storage.googleapis.com/a1aa/image/ea2a46e7-b526-455a-8a3c-7f8b5cce471f.jpg"/>
             <svg class="absolute top-6 left-6 w-20 h-20 stroke-gray-300 opacity-30" fill="none" stroke="currentColor" stroke-width="1" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 7s1-2 4-2 4 2 4 2M4 17s1-2 4-2 4 2 4 2M16 7s1-2 4-2 4 2 4 2M16 17s1-2 4-2 4 2 4 2" stroke-linecap="round" stroke-linejoin="round">
                 </path>
             </svg>
         </div>
-        
+
         <!-- Right side -->
         <div class="flex flex-col justify-center items-center px-6 py-12 md:w-1/2">
             <div class="w-full max-w-sm">
@@ -62,6 +62,9 @@
                         <div class="flex justify-between items-center mt-2">
                             <a class="text-xs text-[#4A90E2] hover:underline" href="{{ url('/register') }}">
                                 Registration
+                            </a>
+                            <a class="text-xs text-[#4A90E2] hover:underline" href="{{ url('/reset_password') }}">
+                                Reset Password
                             </a>
                         </div>
                     </div>
