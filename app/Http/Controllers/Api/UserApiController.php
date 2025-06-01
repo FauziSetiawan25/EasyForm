@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class UserApiController extends Controller
 {
+    public function getAll()
+    {
+        $user = User::all();
+
+        return response()->json([
+            'data' => $user
+        ]);
+    }
+
     public function show($id)
     {
         $user = User::findOrFail($id);
@@ -33,6 +42,17 @@ class UserApiController extends Controller
             'riwayat_berobat' => $user->riwayat_berobat ?? [],
         ]);
     }
+
+    public function input(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $data = $request->all();
+
+        $user->update($data);
+
+        return response()->json(['message' => 'Updated successfully'], 200);
+    }
+
 
     public function apiUpdate(Request $request)
     {
