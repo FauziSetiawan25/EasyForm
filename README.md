@@ -55,13 +55,7 @@ EasyForm/
    composer install
    ```
 
-3. **Instalasi dependensi JavaScript:**
-
-   ```bash
-   npm install
-   ```
-
-4. **Salin file `.env` dan konfigurasi:**
+3. **Salin file `.env` dan konfigurasi:**
 
    ```bash
    cp .env.example .env
@@ -70,13 +64,13 @@ EasyForm/
 
    Sesuaikan konfigurasi database dan lainnya di file `.env`.
 
-5. **Migrasi database:**
+4. **Migrasi database:**
 
    ```bash
    php artisan migrate
    ```
 
-6. **Jalankan server pengembangan:**
+5. **Jalankan server pengembangan:**
 
    ```bash
    php artisan serve
@@ -84,19 +78,6 @@ EasyForm/
 
    Akses aplikasi di `http://localhost:8000`.
 
-7. **Kompilasi aset frontend:**
-
-   ```bash
-   npm run dev
-   ```
-
-## 🧪 Pengujian
-
-Jalankan pengujian dengan perintah:
-
-```bash
-php artisan test
-```
 
 ## 📄 Lisensi
 
